@@ -152,15 +152,20 @@ datageoms[,merge:=paste0(round(ts/100000))]
 merge(l1,datageoms,by="merge")
 merge(l1,datageoms,by="merge")[order(merge,-confidence)][ms_diff != 0,]
 
+datageoms$ts <- as.numeric(datageoms$ts)
+l1$ms <- as.numeric(l1$ms)
+l1[,merge:=paste0(round(ms/100000))]
+datageoms[,merge:=paste0(round(ts/100000))]
+
 ## Grouping/Selection Examples:
 # not 2014  
-j1 <- merge(l1,datageoms,by="merge")[order(ms,-confidence)][ms_diff != 0,]
-j1[,.(fsum.hour=round(fsum(as.numeric(ms_diff))/(60 * 60 * 1000))),
+j1 <- merge(l1,datageoms,by="merge")[order(ms,-confidence)][ms_diff.x != 0,]
+j1[,.(fsum.hour=round(fsum(as.numeric(ms_diff.x))/(60 * 60 * 1000))),
 .(year,activity)][year != 2014,
 dcast(.SD,activity ~ year,value.var="fsum.hour",fun.aggregate=fsum)]
 
 # not 2014 and confidence interval > 50
-j1 <- merge(l1,datageoms,by="merge")[order(ms,-confidence)][ms_diff != 0,]
+j1 <- merge(l1,datageoms,by="merge")[order(ms,-confidence)][ms_diff.x != 0,]
 j1[,.(fsum.hour=round(fsum(as.numeric(ms_diff))/(60 * 60 * 1000))),
 .(year,confidence,activity)][year != 2014 & confidence > 50,
 dcast(.SD,activity ~ year,value.var="fsum.hour",fun.aggregate=fsum)]
