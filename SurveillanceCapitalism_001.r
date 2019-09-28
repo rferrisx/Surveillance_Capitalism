@@ -166,7 +166,7 @@ dcast(.SD,activity ~ year,value.var="fsum.hour",fun.aggregate=fsum)]
 
 # not 2014 and confidence interval > 50
 j1 <- merge(l1,datageoms,by="merge")[order(ms,-confidence)][ms_diff.x != 0,]
-j1[,.(fsum.hour=round(fsum(as.numeric(ms_diff))/(60 * 60 * 1000))),
+j1[,.(fsum.hour=round(fsum(as.numeric(ms_diff.x))/(60 * 60 * 1000))),
 .(year,confidence,activity)][year != 2014 & confidence > 50,
 dcast(.SD,activity ~ year,value.var="fsum.hour",fun.aggregate=fsum)]
 
@@ -193,5 +193,3 @@ j2[,.N,.(merge)][N > 25,][order(merge)]
 mergelist <- j2[,.N,.(merge)][N > 25,][order(merge)]$merge
 j3 <- j2[merge %in% mergelist & !duplicated(paste0(substr(lat,1,6),",",substr(long,1,6))),][order(merge)]
 write.csv(j3,"j3.csv",row.names=FALSE)
-
-
