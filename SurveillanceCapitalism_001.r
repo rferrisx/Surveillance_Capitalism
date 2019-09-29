@@ -135,6 +135,8 @@ Sys.time()
 # l <- {};i <- 0;for(i in seq(1,end,3)){l <- rbind(l,as.data.table(t(k[i:(2+i)])))}
 # setnames(l, c("ms","activity","confidence")))
 
+# stop here if you don't want the data for j and datageoms merged. Merges still a work in progress:
+
 fsum <- function(x) {sum(x,na.rm=TRUE)};
 end <- nrow(l)
 l1 <- j[,ms_diff:=as.numeric(j[-1]$ms) - as.numeric(j$ms) ][-end]
